@@ -1,11 +1,11 @@
 
 def base_example():
     from py_structure.base import Structure
-    from py_structure.fields import String, RangeNumber, Float
+    from py_structure.fields import String, Range, Float
 
     class Stock(Structure):
         name = String()
-        shares = RangeNumber(min_val=5, max_val=20)
+        shares = Range(min_val=5, max_val=20)
         price = Float()
 
     stock = Stock(name='product', shares=10, price=4.5)
@@ -42,13 +42,13 @@ def decorators_example():
 
 
 def fields_example():
-    from py_structure.fields import Float, RangeNumber, Email, URL, typeassert, strucassert
+    from py_structure.fields import Float, Range, Email, URL, typeassert, strucassert
 
-    @typeassert(name=str, shares=RangeNumber(min_val=5, max_val=20), price=Float)
+    @typeassert(name=str, shares=Range(min_val=5, max_val=20), price=Float)
     class Stock:
         pass
 
-    @strucassert(name=str, salary=RangeNumber(min_val=4000, max_val=10000), email=Email(), url=URL())
+    @strucassert(name=str, salary=Range(min_val=4000, max_val=10000), email=Email(), url=URL())
     class Employee:
         pass
 

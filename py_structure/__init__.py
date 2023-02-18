@@ -15,9 +15,9 @@ from .tools import Timer, Counter, Cache, LazyCLass, lazyproperty
 from .protocols import Descriptor, FrozenDescriptor, Validator, FrozenValidator, Singleton
 from .fields import (
     Typed,
-    Int, Float, Decimal, Positive, Negative, RangeNumber, Binary, Hex, Oct,
+    Int, Float, Decimal, Positive, Negative, Range, Binary, Hex, Oct,
     String, SizedString, RegexString, Email, URL, Slug,
-    DateTime, Duration,
+    DateTime,
     Choice,
     typeassert, strucassert
 )
@@ -38,11 +38,11 @@ __all__ = [
     # Protocols
     'Descriptor', 'FrozenDescriptor', 'Validator', 'FrozenValidator', 'Singleton',
     # Num Fields
-    'Typed', 'Int', 'Float', 'Decimal', 'Positive', 'Negative', 'RangeNumber', 'Binary', 'Hex', 'Oct',
+    'Typed', 'Int', 'Float', 'Decimal', 'Positive', 'Negative', 'Range', 'Binary', 'Hex', 'Oct',
     # Str Fields
     'String', 'RegexString', 'SizedString', 'Email', 'URL', 'Slug',
     # Date / Time Fields
-    'DateTime', 'Duration',
+    'DateTime', 'DurationDateTime',
     # Mix Fields
     'PositiveInt', 'NegativeInt', 'PositiveFloat', 'NegativeFloat', 'PositiveDecimal', 'NegativeDecimal',
     # Multi Fields
@@ -79,6 +79,6 @@ class PositiveDecimal(Decimal, Positive):
 class NegativeDecimal(Decimal, Negative):
     """Negative Decimal Number"""
 
-# import a package form another file
-# import os
-# __path__.append(os.path.join(os.path.dirname(__file__), '..', 'other_package'))
+
+class DurationDateTime(DateTime, Range):
+    """Duration DateTime Field"""

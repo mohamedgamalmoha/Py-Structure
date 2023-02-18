@@ -102,30 +102,24 @@ class Negative(Signed):
         return value < 0
 
 
-class RangeNumber(Descriptor):
-    """Range Number Field"""
+class Range(Descriptor):
+    """Range Field, it works if the limits have __lt__ && __gt__ functions in their implementation"""
 
-    def __init__(self, name: str = None,  *args, min_val: int = 1, max_val: int = 10, **kwargs):
+    def __init__(self, name: str = None,  *args, min_val: Any, max_val: Any, **kwargs):
+        super(Range, self).__init__(name,  *args, **kwargs)
+
         pair = (min_val, max_val)
-
-        if any(map(lambda num: not str(num).isnumeric(), pair)):
-            raise ValueError(f"Values of range`s limits should be numeric instead of ({min_val}, {max_val})")
-
-        if any(map(lambda num: not isinstance(num, int), pair)):
-            raise TypeError(f"Value should be typed integer instead of ({type(min_val)}, {type(max_val)})")
-
         self.max_val = max(pair)
         self.min_val = min(pair)
 
-        super(RangeNumber, self).__init__(name,  *args, **kwargs)
-
     def __set__(self, instance, value) -> Any:
-        if value not in range(self.min_val, self.max_val):
+        if not (self.min_val < value < self.max_val):
             raise ValueError(f"Value should be within range ({self.min_val}, {self.max_val}) not {value}")
-        super(RangeNumber, self).__set__(instance, value)
+        super(Range, self).__set__(instance, value)
 
-    def get_range_limits(self) -> Tuple[int, int]:
-        """Get range limit"""
+    @property
+    def paris(self) -> Tuple[int, int]:
+        """Get range limits"""
         return self.min_val, self.max_val
 
 
@@ -192,32 +186,7 @@ class Slug(RegexString):
 
 class DateTime(Typed):
     """DateTime Field"""
-
     typ = datetime
-
-
-class Duration(DateTime):
-    """Duration DateTime Field"""
-
-    def __init__(self, name: str = None, *args, start_date: datetime, end_date: datetime, **kwargs):
-        pair = (start_date, end_date)
-
-        if any(map(lambda num: not isinstance(num, datetime), pair)):
-            raise TypeError(f"Value should be typed integer instead of ({type(start_date)}, {type(end_date)})")
-
-        self.start_date = start_date
-        self.end_date = end_date
-
-        super(Duration, self).__init__(name, *args, **kwargs)
-
-    def __set__(self, instance, value: datetime) -> Any:
-        if not self.start_date < value < self.end_date:
-            raise ValueError(f"Value should be within range ({self.start_date}, {self.end_date}) not {value}")
-        super(Duration, self).__set__(instance, value)
-
-    def get_range_limits(self) -> Tuple[datetime, datetime]:
-        """Get range limit"""
-        return self.start_date, self.end_date
 
 
 class Choice(Descriptor):

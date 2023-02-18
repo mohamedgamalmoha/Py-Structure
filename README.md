@@ -10,9 +10,9 @@ The package is currently in beta version. A lot of work including testing needs 
 ## Struct Examples
 ### Simplest way using typeassert
 ```python
-from py_structure.fields import RangeNumber, Float, typeassert
+from py_structure.fields import Range, Float, typeassert
 
-@typeassert(name=str, shares=RangeNumber(min_val=5, max_val=20), price=Float)
+@typeassert(name=str, shares=Range(min_val=5, max_val=20), price=Float)
 class Stock:
     ...
 ```
@@ -22,9 +22,9 @@ It is a lite way to construct a class similar to Structure, but it has some limi
 
 - Inheritance is supported, but using same decorator for children is not applicable.
 ```python
-from py_structure.fields import RangeNumber, String, Email, URL, typeassert
+from py_structure.fields import Range, String, Email, URL, typeassert
 
-@typeassert(name=String, salary=RangeNumber(min_val=4000, max_val=10000), email=Email(), url=URL())
+@typeassert(name=String, salary=Range(min_val=4000, max_val=10000), email=Email(), url=URL())
 class Employee:
     ...
 
@@ -48,9 +48,9 @@ def __init__(self, *args, **kwargs):
 ### Another simple way using strucassert
 typeassert decorator to guarantee static typing, descriptors and built in types are allowed.<br>
 ```python
-from py_structure.fields import RangeNumber, Email, URL, typeassert
+from py_structure.fields import Range, Email, URL, typeassert
 
-@strucassert(name=str, salary=RangeNumber(min_val=4000, max_val=10000), email=Email(), url=URL())
+@strucassert(name=str, salary=Range(min_val=4000, max_val=10000), email=Email(), url=URL())
 class Employee:
     ...
 ```
@@ -63,16 +63,16 @@ class Employee:
 ### More Complex way to instruct detailed structure 
 ```python
 from py_structure.base import Structure
-from py_structure.fields import RangeNumber, String, Float, Email, URL
+from py_structure.fields import Range, String, Float, Email, URL
 
 class Stock(Structure):
     name = String()
-    shares = RangeNumber(min_val=5, max_val=20)
+    shares = Range(min_val=5, max_val=20)
     price = Float()
     
  class Employee(Structure):
     name = String(init=False, default='none')
-    salary = RangeNumber(min_val=4000, max_val=10000, init=False, default=5000)
+    salary = Range(min_val=4000, max_val=10000, init=False, default=5000)
     email = Email()
     url = URL()
 ```
@@ -135,10 +135,10 @@ It is used for constructing fields that used in structure.
 ```python
 from py_tructure.fileds import( 
     Typed,
-    Int, Float, Decimal, Positive, Negative, RangeNumber, Binary, Hex, Oct,
+    Int, Float, Decimal, Positive, Negative, Range, Binary, Hex, Oct,
     PositiveInt, NegativeInt, PositiveFloat, NegativeFloat, PositiveDecimal, NegativeDecimal,
     String, SizedString, RegexString, Email, URL, Slug,
-    DateTime, Duration,
+    DateTime,
     Choice
     )
 ```
