@@ -18,6 +18,7 @@ from .modes import NoneMode
 
 
 class Typed(ABC, Descriptor):
+    """Base class for type assertion, ensure that value has type/structure as required."""
     typ: type = type
 
     def get_type(self) -> type:
@@ -36,34 +37,42 @@ class Typed(ABC, Descriptor):
 
 
 class Int(Typed):
+    """Integer Number Field"""
     typ = int
 
 
 class Float(Typed):
+    """Float Number Field"""
     typ = float
 
 
 class Decimal(Typed):
+    """Decimal Number Field"""
     typ = Dec
 
 
 class Binary(Typed):
+    """Binary Number Field"""
     typ = bin
 
 
 class Hex(Typed):
+    """Hexadecimal Number Field"""
     typ = hex
 
 
 class Oct(Typed):
+    """Octal Number Field"""
     typ = oct
 
 
 class Complex(Typed):
+    """Complex Number Field"""
     typ = complex
 
 
 class Signed(ABC, Descriptor):
+    """Base class for sign number assertion, ensure that number has a sign as required."""
 
     @abstractmethod
     def condition(self, value: Any) -> bool:
@@ -80,18 +89,21 @@ class Signed(ABC, Descriptor):
 
 
 class Positive(Signed):
+    """Positive Number Field"""
 
     def condition(self, value: Any) -> bool:
         return value > 0
 
 
 class Negative(Signed):
+    """Negative Number Field"""
 
     def condition(self, value: Any) -> bool:
         return value < 0
 
 
 class RangeNumber(Descriptor):
+    """Range Number Field"""
 
     def __init__(self, name: str = None,  *args, min_val: int = 1, max_val: int = 10, **kwargs):
         pair = (min_val, max_val)
@@ -118,10 +130,12 @@ class RangeNumber(Descriptor):
 
 
 class String(Typed):
+    """String Field"""
     typ = str
 
 
 class SizedString(String):
+    """Sized String Field"""
 
     def __init__(self, *args, max_len: int, **kwargs):
         self.max_len = max_len
@@ -134,6 +148,7 @@ class SizedString(String):
 
 
 class RegexString(String):
+    """Regex Sting Field"""
 
     def get_value_error_message(self) -> str:
         return f"Value of {self.name} does not match the pattern"
@@ -152,18 +167,23 @@ class RegexString(String):
 
 
 class Email(RegexString):
+    """Email Field"""
+
     def __init__(self, *args, **kwargs):
         pattern = re.compile(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b')
         super(Email, self).__init__(*args, pattern=pattern, full_match=True, **kwargs)
 
 
 class URL(RegexString):
+    """URL Field"""
+
     def __init__(self, *args, **kwargs):
         pattern = re.compile(r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))")
         super(URL, self).__init__(*args, pattern=pattern, full_match=True, **kwargs)
 
 
 class Slug(RegexString):
+    """Slug Field"""
 
     def __init__(self, *args, **kwargs):
         pattern = re.compile(r"^ [a - z0 - 9] + (?:-[a-z0-9]+) *$")
@@ -171,10 +191,13 @@ class Slug(RegexString):
 
 
 class DateTime(Typed):
+    """DateTime Field"""
+
     typ = datetime
 
 
 class Duration(DateTime):
+    """Duration DateTime Field"""
 
     def __init__(self, name: str = None, *args, start_date: datetime, end_date: datetime, **kwargs):
         pair = (start_date, end_date)
@@ -198,6 +221,7 @@ class Duration(DateTime):
 
 
 class Choice(Descriptor):
+    """Choice Field"""
 
     def __init__(self, *args, choices: tuple = (), **kwargs):
         self.choices = choices
