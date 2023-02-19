@@ -10,7 +10,7 @@ from typing import Any, Tuple, Pattern
 # from .decorators import debug
 from .base import Structure
 from .protocols import Descriptor
-from .utilities import _get_all_cls_init_args, _get_cls_init_args, is_default_init
+from .utilities import _get_all_cls_init_args, _get_cls_init_args, _is_default_init
 
 # need to be modified
 from .decorators import debug
@@ -302,7 +302,7 @@ def typeassert(cls=None, **fields):
     # switching between __init__ function with __post_init__
     cls_init = getattr(cls, '__init__', None)
     # checking if the __init__ function is constructed or changed from the default one
-    if not is_default_init(cls_init):
+    if not _is_default_init(cls_init):
         setattr(cls, '__post_init__', cls_init)
     # updating functions with new ones
     setattr(cls, '__init__', auto_init)

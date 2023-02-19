@@ -51,7 +51,7 @@ def _get_cls_methods_to_property(cls: type) -> List[Tuple[str, Any]]:
     return getmembers(cls, filter_methods)
 
 
-def is_default_init(func: Callable) -> bool:
+def _is_default_init(func: Callable) -> bool:
     """Check if the given function is default init function - object.__init__ -"""
     return signature(func) == signature(object.__init__)
 
