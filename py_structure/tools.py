@@ -2,7 +2,7 @@ import time
 import weakref
 from typing import Any, Callable
 
-from .utilities import _get_cls_methods
+from .utilities import _get_cls_methods_to_property
 
 
 class Timer:
@@ -137,6 +137,6 @@ class LazyCLass(type):
 
     def __new__(mcs, name: str, bases: tuple, namespace: dict) -> Any:
         cls = super().__new__(mcs, name, bases, namespace)
-        for name, method in _get_cls_methods(cls):
+        for name, method in _get_cls_methods_to_property(cls):
             setattr(cls, name, lazyproperty(method))
         return cls

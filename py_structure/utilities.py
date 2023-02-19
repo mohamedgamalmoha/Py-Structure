@@ -38,6 +38,19 @@ def _get_cls_methods(cls: type) -> List[Tuple[str, Any]]:
     return getmembers(cls, lambda i: isfunction(i) or ismethod(i))
 
 
+def _get_cls_methods_to_property(cls: type) -> List[Tuple[str, Any]]:
+    """Get all methods that cloud be converted to property"""
+    def filter_methods(method):
+        """Get methods that have only one parameter 'self'"""
+        # exclude in case of not being method / function, or it was '__init__' function
+        if not (isfunction(method) or ismethod(method)) or method.__name__ == '__init__':
+            return False
+        # exclude in case of having more than one parameter, that parameter should be 'self'
+        parameters = signature(method).parameters
+        return len(parameters) == 1 and parameters.get('self', None) is not None
+    return getmembers(cls, filter_methods)
+
+
 def is_default_init(func: Callable) -> bool:
     """Check if the given function is default init function - object.__init__ -"""
     return signature(func) == signature(object.__init__)
