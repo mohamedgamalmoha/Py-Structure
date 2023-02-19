@@ -67,5 +67,6 @@ def flatten(items: Iterable, ignore_types: Tuple[type] = (str, bytes)) -> Genera
 
 
 def sort_list_by_another(sortable: list, base: list) -> list:
+    """Sort list based on another"""
     sortable.sort(key=dict(zip(sortable, base)).get)
     return sortable
