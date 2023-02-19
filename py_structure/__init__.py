@@ -11,11 +11,12 @@ It allows to generate static types for objects in both initialization & during e
 
 from .base import StructureMeta, Structure
 from .multi_dispatch import MultiMethodMeta
+from .utilities import flatten, sort_list_by_another
 from .tools import Timer, Counter, Cache, LazyCLass, lazyproperty
 from .protocols import Descriptor, FrozenDescriptor, Validator, FrozenValidator, Singleton
 from .fields import (
     Typed,
-    Int, Float, Decimal, Positive, Negative, Range, Binary, Hex, Oct,
+    Int, Float, Decimal, Positive, Negative, Range, Binary, Hex, Oct, Complex,
     String, SizedString, RegexString, Email, URL, Slug,
     DateTime,
     Choice,
@@ -38,7 +39,9 @@ __all__ = [
     # Protocols
     'Descriptor', 'FrozenDescriptor', 'Validator', 'FrozenValidator', 'Singleton',
     # Num Fields
-    'Typed', 'Int', 'Float', 'Decimal', 'Positive', 'Negative', 'Range', 'Binary', 'Hex', 'Oct',
+    'Typed', 'Int', 'Float', 'Decimal', 'Positive', 'Negative', 'Range', 'Binary', 'Hex', 'Oct', 'Complex',
+    # Range Fields
+    'IntRange', 'FloatRange', 'DecimalRange', 'BinaryRange', 'HexRange', 'OctRange', 'ComplexRange',
     # Str Fields
     'String', 'RegexString', 'SizedString', 'Email', 'URL', 'Slug',
     # Date / Time Fields
@@ -52,7 +55,9 @@ __all__ = [
     # Multiple Dispatch with Function Annotations
     'MultiMethodMeta',
     # Tools
-    'Timer', 'Counter', 'Cache',  'lazyproperty', 'LazyCLass'
+    'Timer', 'Counter', 'Cache',  'lazyproperty', 'LazyCLass',
+    # Utilities
+    flatten, sort_list_by_another
 ]
 
 
@@ -78,6 +83,34 @@ class PositiveDecimal(Decimal, Positive):
 
 class NegativeDecimal(Decimal, Negative):
     """Negative Decimal Number"""
+
+
+class IntRange(Int, Range):
+    """Int Range Field"""
+
+
+class FloatRange(Float, Range):
+    """Float Range Field"""
+
+
+class DecimalRange(Decimal, Range):
+    """Decimal Range Field"""
+
+
+class BinaryRange(Binary, Range):
+    """Binary Range Field"""
+
+
+class HexRange(Hex, Range):
+    """Hex Range Field"""
+
+
+class OctRange(Oct, Range):
+    """Oct Range Field"""
+
+
+class ComplexRange(Complex, Range):
+    """Complex Range Field"""
 
 
 class DurationDateTime(DateTime, Range):
