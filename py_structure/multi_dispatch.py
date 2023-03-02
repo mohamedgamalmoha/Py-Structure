@@ -18,7 +18,7 @@ class MultiMethod:
         """Register a new method as a multimethod"""
         sig = inspect.signature(meth)
         # Build a type signature from the method's annotations
-        types = []
+        _types = []
         for name, parm in sig.parameters.items():
             if name == 'self':
                 continue
@@ -27,9 +27,9 @@ class MultiMethod:
             if not isinstance(parm.annotation, (type, Descriptor)):
                 raise TypeError('Argument {} annotation must be a type'.format(name))
             if parm.default is not inspect.Parameter.empty:
-                self._methods[tuple(types)] = meth
-            types.append(parm.annotation)
-        self._methods[tuple(types)] = meth
+                self._methods[tuple(_types)] = meth
+            _types.append(parm.annotation)
+        self._methods[tuple(_types)] = meth
 
     def __call__(self, *args):
         """Call a method based on type signature of the arguments"""
